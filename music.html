@@ -1,0 +1,39 @@
+<h1>C major</h1>
+
+<button onclick="playNote(261.6, 'triangle')"> C</button>
+<button onclick="playNote(293.7, 'triangle')"> D</button>
+<button onclick="playNote(329.6, 'triangle')"> E</button>
+<button onclick="playNote(349.2, 'triangle')"> F</button>
+<button onclick="playNote(392.0, 'triangle')"> G</button>
+<button onclick="playNote(440.0, 'triangle')"> A</button>
+<button onclick="playNote(493.9, 'triangle')"> B</button>
+
+
+<div class="grid-container">
+    <div class="grid-item">1</div>
+    <div class="grid-item">2</div>
+    <div class="grid-item">3</div>
+    <div class="grid-item">4</div>
+    <div class="grid-item">5</div>
+    <div class="grid-item">6</div>
+    <div class="grid-item">7</div>
+    <div class="grid-item">8</div>
+    <div class="grid-item">9</div>
+</div>
+<script>
+    const context = new AudioContext();
+    var o = null;
+    var g = null;
+
+    function playNote(frequency, type) {
+        o = context.createOscillator();
+        g = context.createGain();
+        o.type = type;
+        o.connect(g);
+        o.frequency.value = frequency;
+        g.connect(context.destination);
+        o.start(0);
+        g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
+    }
+
+</script>
