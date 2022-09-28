@@ -1,12 +1,17 @@
+let isPlaying = false;
+
+
 function clickButtonPlay() {
     const buttonPlay = document.getElementById("button_play");
     if (buttonPlay.textContent === "PLAY") {
         buttonPlay.textContent = "STOP";
-        start()
+        isPlaying = true;
+        start(true)
         return
     }
     if (buttonPlay.textContent === "STOP") {
         buttonPlay.textContent = "PLAY";
+        isPlaying = false;
         stop()
     }
 }
@@ -14,15 +19,24 @@ function clickButtonPlay() {
 let intervalId = null;
 let counter = 0;
 
-const start = () => {
-    playMusic()
-    intervalId = setInterval(playMusic, 1000)
+const start = (firstTime = false) => {
+    clearInterval(intervalId)
+    if (isPlaying){
+        if (firstTime){
+            playMusic()
+        }
+        const bpm = document.getElementById("bpm").value;
+        const delay = 60000 / bpm;
+       intervalId = setInterval(playMusic, delay);
+    }
 
 }
+
 const stop = () => {
     clearInterval(intervalId)
-    const previousGrid = document.getElementById("grid" + counter)
-    previousGrid.className = "grid-item"
+    for (let i = 1; i < 5; i++) {
+        colorize(i, false)
+    }
     counter = 0;
 }
 
@@ -32,6 +46,7 @@ function playMusic() {
         counter = 0;
     }
     counter++;
+    console.log(counter)
     colorize(counter, true)
     if (counter > 1) {
         colorize(counter - 1, false)
